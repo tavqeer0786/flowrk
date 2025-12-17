@@ -1,0 +1,66 @@
+{
+  "name": "WorkerProfile",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "description": "Reference to user"
+    },
+    "full_name": {
+      "type": "string",
+      "description": "Worker's full name"
+    },
+    "city": {
+      "type": "string",
+      "description": "City"
+    },
+    "area": {
+      "type": "string",
+      "description": "Area/Locality"
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Skills from categories"
+    },
+    "availability": {
+      "type": "string",
+      "enum": [
+        "full_day",
+        "part_time",
+        "flexible"
+      ],
+      "description": "Work availability"
+    },
+    "experience": {
+      "type": "string",
+      "description": "Years of experience"
+    },
+    "whatsapp": {
+      "type": "string",
+      "description": "WhatsApp number"
+    },
+    "saved_jobs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Saved job IDs"
+    },
+    "applied_jobs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Applied job IDs"
+    }
+  },
+  "required": [
+    "user_id",
+    "full_name",
+    "city",
+    "skills"
+  ]
+}

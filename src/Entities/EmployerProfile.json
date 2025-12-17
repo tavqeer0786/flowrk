@@ -1,0 +1,46 @@
+{
+  "name": "EmployerProfile",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "description": "Reference to user"
+    },
+    "name": {
+      "type": "string",
+      "description": "Name or Shop Name"
+    },
+    "city": {
+      "type": "string",
+      "description": "City"
+    },
+    "area": {
+      "type": "string",
+      "description": "Area/Locality"
+    },
+    "employer_type": {
+      "type": "string",
+      "enum": [
+        "shop_owner",
+        "home_owner",
+        "contractor",
+        "event_organizer"
+      ],
+      "description": "Type of employer"
+    },
+    "whatsapp": {
+      "type": "string",
+      "description": "WhatsApp number"
+    },
+    "total_jobs_posted": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "user_id",
+    "name",
+    "city",
+    "employer_type"
+  ]
+}

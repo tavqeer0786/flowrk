@@ -1,0 +1,83 @@
+{
+  "name": "Job",
+  "type": "object",
+  "properties": {
+    "category": {
+      "type": "string",
+      "enum": [
+        "painting",
+        "cleaning",
+        "delivery",
+        "shop_helper",
+        "event_work"
+      ],
+      "description": "Job category"
+    },
+    "title": {
+      "type": "string",
+      "description": "Short job title"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed job description"
+    },
+    "payment": {
+      "type": "string",
+      "description": "Payment amount (e.g., \u20b9500/day)"
+    },
+    "payment_type": {
+      "type": "string",
+      "enum": [
+        "per_day",
+        "total",
+        "per_hour"
+      ],
+      "description": "Payment type"
+    },
+    "city": {
+      "type": "string",
+      "description": "City name"
+    },
+    "area": {
+      "type": "string",
+      "description": "Area/Locality"
+    },
+    "whatsapp": {
+      "type": "string",
+      "description": "WhatsApp contact number"
+    },
+    "employer_name": {
+      "type": "string",
+      "description": "Employer/Shop name"
+    },
+    "employer_id": {
+      "type": "string",
+      "description": "User ID of employer"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "closed"
+      ],
+      "default": "active"
+    },
+    "timing": {
+      "type": "string",
+      "description": "Work timing (e.g., Full day, Part time)"
+    },
+    "requirements": {
+      "type": "string",
+      "description": "Any special requirements"
+    }
+  },
+  "required": [
+    "category",
+    "description",
+    "payment",
+    "city",
+    "area",
+    "whatsapp",
+    "employer_id"
+  ]
+}
