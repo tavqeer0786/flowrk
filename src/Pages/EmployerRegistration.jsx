@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2, Briefcase } from 'lucide-react';
 import { motion } from 'framer-motion';
 import EmployerRegistrationForm from '@/components/forms/EmployerRegistrationForm';
+import SEO from '@/components/SEO';
 
 export default function EmployerRegistration() {
   const navigate = useNavigate();
@@ -24,17 +25,17 @@ export default function EmployerRegistration() {
         base44.auth.redirectToLogin(createPageUrl('RoleSelection'));
         return;
       }
-      
+
       const userData = await base44.auth.me();
       setUser(userData);
-      
+
       // Check if already has employer profile
       const profiles = await base44.entities.EmployerProfile.filter({ user_id: userData.id });
       if (profiles && profiles.length > 0) {
         navigate(createPageUrl('EmployerDashboard'));
         return;
       }
-      
+
       setCheckingAuth(false);
     } catch (error) {
       console.error('Auth error:', error);
@@ -50,7 +51,7 @@ export default function EmployerRegistration() {
         user_id: user.id,
         total_jobs_posted: 0
       });
-      
+
       navigate(createPageUrl('EmployerHome'));
     } catch (error) {
       console.error('Error creating profile:', error);
@@ -68,6 +69,11 @@ export default function EmployerRegistration() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-amber-50/30 to-gray-50 py-8 px-4">
+      <SEO
+        title="Employer Registration - Hire Local Workers"
+        description="Register as an employer on Flowrk.in and start hiring local talent today. Post jobs, connect with workers, and get things done locally."
+        keywords="employer registration, hire helpers near me, post jobs locally, find labor India, hire painter cleaner"
+      />
       <div className="max-w-xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -79,15 +85,15 @@ export default function EmployerRegistration() {
                 <Briefcase className="w-7 h-7 text-white" />
               </div>
               <CardTitle className="text-2xl font-bold text-gray-900">
-                Employer Profile Banao
+                Create Employer Profile
               </CardTitle>
               <p className="text-gray-500 mt-2">
-                Apni details bharo aur workers dhundho
+                Fill in your details and find workers
               </p>
             </CardHeader>
             <CardContent className="pt-6">
-              <EmployerRegistrationForm 
-                onSubmit={handleSubmit} 
+              <EmployerRegistrationForm
+                onSubmit={handleSubmit}
                 isLoading={isLoading}
               />
             </CardContent>

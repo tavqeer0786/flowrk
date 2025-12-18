@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 import { User, MapPin, Briefcase, Clock, Phone, Loader2 } from 'lucide-react';
-import { categoryLabels } from '@/components/ui/CategoryCard';
+import { categoryLabels } from '@/components/ui/categoryConstants';
 
 const skills = Object.entries(categoryLabels);
 
@@ -100,15 +100,15 @@ export default function WorkerRegistrationForm({ onSubmit, isLoading, initialDat
               onClick={() => handleSkillToggle(value)}
               className={`
                 flex items-center gap-2 p-3 rounded-xl border-2 cursor-pointer transition-all
-                ${formData.skills.includes(value) 
-                  ? 'border-teal-500 bg-teal-50' 
+                ${formData.skills.includes(value)
+                  ? 'border-teal-500 bg-teal-50'
                   : 'border-gray-200 hover:border-teal-200'}
               `}
             >
               <div className={`
                 w-5 h-5 rounded border-2 flex items-center justify-center transition-all
-                ${formData.skills.includes(value) 
-                  ? 'bg-teal-600 border-teal-600' 
+                ${formData.skills.includes(value)
+                  ? 'bg-teal-600 border-teal-600'
                   : 'border-gray-300'}
               `}>
                 {formData.skills.includes(value) && (

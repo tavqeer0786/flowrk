@@ -11,22 +11,22 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Edit, MapPin, IndianRupee, Phone, Clock, FileText, Loader2, CheckCircle, ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { categoryLabels } from '@/components/ui/CategoryCard';
+import { categoryLabels } from '@/components/ui/categoryConstants';
 import { Link } from 'react-router-dom';
 
 const timingOptions = [
-  { value: 'Full Day', label: 'Full Day (पूरा दिन)' },
-  { value: 'Part Time', label: 'Part Time (आधा दिन)' },
-  { value: 'Morning Only', label: 'Morning Only (सुबह)' },
-  { value: 'Evening Only', label: 'Evening Only (शाम)' },
-  { value: 'Flexible', label: 'Flexible (जैसा सूट हो)' }
+  { value: 'Full Day', label: 'Full Day' },
+  { value: 'Part Time', label: 'Part Time' },
+  { value: 'Morning Only', label: 'Morning Only' },
+  { value: 'Evening Only', label: 'Evening Only' },
+  { value: 'Flexible', label: 'Flexible' }
 ];
 
 export default function EditJob() {
   const navigate = useNavigate();
   const urlParams = new URLSearchParams(window.location.search);
   const jobId = urlParams.get('id');
-  
+
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [formData, setFormData] = useState({
@@ -69,13 +69,13 @@ export default function EditJob() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
     try {
       await base44.entities.Job.update(jobId, {
         ...formData,
         payment: formData.payment.includes('₹') ? formData.payment : `₹${formData.payment}`
       });
-      
+
       setIsSuccess(true);
       setTimeout(() => {
         navigate(createPageUrl('EmployerDashboard'));
@@ -83,7 +83,7 @@ export default function EditJob() {
     } catch (error) {
       console.error('Error updating job:', error);
     }
-    
+
     setIsLoading(false);
   };
 
@@ -131,7 +131,7 @@ export default function EditJob() {
                 <Edit className="w-7 h-7 text-white" />
               </div>
               <CardTitle className="text-2xl font-bold text-gray-900">
-                Job Edit Karo
+                Edit Job
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
@@ -144,7 +144,7 @@ export default function EditJob() {
                     onValueChange={(value) => setFormData({ ...formData, category: value })}
                   >
                     <SelectTrigger className="h-12 rounded-xl">
-                      <SelectValue placeholder="Category choose karo" />
+                      <SelectValue placeholder="Choose Category" />
                     </SelectTrigger>
                     <SelectContent>
                       {Object.entries(categoryLabels).map(([value, label]) => (
@@ -159,7 +159,7 @@ export default function EditJob() {
                   <Label htmlFor="title">Job Title</Label>
                   <Input
                     id="title"
-                    placeholder="e.g., Painter Chahiye"
+                    placeholder="e.g., Painter needed"
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                     className="h-12 rounded-xl"
@@ -182,7 +182,7 @@ export default function EditJob() {
                 <div className="space-y-2">
                   <Label>Payment (₹) *</Label>
                   <Input
-                    placeholder="e.g., 500/day"
+                    placeholder="e.g., 500"
                     value={formData.payment}
                     onChange={(e) => setFormData({ ...formData, payment: e.target.value })}
                     required

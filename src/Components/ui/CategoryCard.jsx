@@ -1,30 +1,7 @@
-import React from 'react';
-import { Paintbrush, Sparkles, Truck, Store, PartyPopper } from 'lucide-react';
+import { Paintbrush, Store } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { categoryIcons, categoryLabels, categoryColors } from './categoryConstants';
 
-const categoryIcons = {
-  painting: Paintbrush,
-  cleaning: Sparkles,
-  delivery: Truck,
-  shop_helper: Store,
-  event_work: PartyPopper
-};
-
-const categoryLabels = {
-  painting: 'Painting',
-  cleaning: 'Cleaning',
-  delivery: 'Delivery',
-  shop_helper: 'Shop Helper',
-  event_work: 'Event Work'
-};
-
-const categoryColors = {
-  painting: 'from-orange-400 to-orange-500',
-  cleaning: 'from-cyan-400 to-cyan-500',
-  delivery: 'from-violet-400 to-violet-500',
-  shop_helper: 'from-emerald-400 to-emerald-500',
-  event_work: 'from-pink-400 to-pink-500'
-};
 
 export default function CategoryCard({ category, onClick, selected = false }) {
   const Icon = categoryIcons[category] || Store;
@@ -63,4 +40,3 @@ export default function CategoryCard({ category, onClick, selected = false }) {
   );
 }
 
-export { categoryIcons, categoryLabels, categoryColors };

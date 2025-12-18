@@ -13,7 +13,7 @@ import { motion } from 'framer-motion';
 import CategoryCard from '@/components/ui/CategoryCard';
 import JobCard from '@/components/ui/JobCard';
 import { Skeleton } from '@/components/ui/skeleton';
-import { categoryLabels } from '@/components/ui/CategoryCard';
+import { categoryLabels } from '@/components/ui/categoryConstants';
 
 const categories = ['painting', 'cleaning', 'delivery', 'shop_helper', 'event_work'];
 
@@ -93,7 +93,10 @@ export default function WorkerHome() {
   });
 
   const handleSaveJob = async (job) => {
-    if (!profile) return;
+    if (!profile) {
+      alert("Login first");
+      return;
+    }
 
     const currentSaved = profile.saved_jobs || [];
     const newSavedJobs = currentSaved.includes(job.id)
@@ -135,10 +138,10 @@ export default function WorkerHome() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="max-w-md w-full text-center">
           <User className="w-12 h-12 mx-auto mb-4 text-gray-400" />
-          <h2 className="text-xl font-bold mb-2">Profile Nahi Mila</h2>
-          <p className="text-gray-600 mb-4">Pehle apna profile banao</p>
+          <h2 className="text-xl font-bold mb-2">Profile Not Found</h2>
+          <p className="text-gray-600 mb-4">Please create your profile first</p>
           <Link to={createPageUrl('WorkerRegistration')}>
-            <Button className="bg-teal-600 hover:bg-teal-700">Profile Banao</Button>
+            <Button className="bg-teal-600 hover:bg-teal-700">Create Profile</Button>
           </Link>
         </div>
       </div>

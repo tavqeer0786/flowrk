@@ -12,7 +12,7 @@ import {
   FileText, MessageCircle, Users
 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { categoryLabels, categoryColors } from '@/components/ui/CategoryCard';
+import { categoryLabels, categoryColors } from '@/components/ui/categoryConstants';
 
 const howItWorksSteps = [
   {

@@ -10,20 +10,21 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Briefcase, MapPin, IndianRupee, Phone, Clock, FileText, Loader2, CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { categoryLabels } from '@/components/ui/CategoryCard';
+import { categoryLabels } from '@/components/ui/categoryConstants';
+import SEO from '@/components/SEO';
 
 const paymentTypes = [
-  { value: 'per_day', label: 'Per Day (रोज़ाना)' },
-  { value: 'total', label: 'Total (कुल)' },
-  { value: 'per_hour', label: 'Per Hour (घंटे के हिसाब)' }
+  { value: 'per_day', label: 'Per Day' },
+  { value: 'total', label: 'Total' },
+  { value: 'per_hour', label: 'Per Hour' }
 ];
 
 const timingOptions = [
-  { value: 'Full Day', label: 'Full Day (पूरा दिन)' },
-  { value: 'Part Time', label: 'Part Time (आधा दिन)' },
-  { value: 'Morning Only', label: 'Morning Only (सुबह)' },
-  { value: 'Evening Only', label: 'Evening Only (शाम)' },
-  { value: 'Flexible', label: 'Flexible (जैसा सूट हो)' }
+  { value: 'Full Day', label: 'Full Day' },
+  { value: 'Part Time', label: 'Part Time' },
+  { value: 'Morning Only', label: 'Morning Only' },
+  { value: 'Evening Only', label: 'Evening Only' },
+  { value: 'Flexible', label: 'Flexible' }
 ];
 
 export default function PostWork() {
@@ -33,7 +34,7 @@ export default function PostWork() {
   const [checkingAuth, setCheckingAuth] = useState(true);
   const [user, setUser] = useState(null);
   const [employerProfile, setEmployerProfile] = useState(null);
-  
+
   const [formData, setFormData] = useState({
     category: '',
     title: '',
@@ -55,7 +56,8 @@ export default function PostWork() {
     try {
       const isAuthenticated = await base44.auth.isAuthenticated();
       if (!isAuthenticated) {
-        base44.auth.redirectToLogin(createPageUrl('PostWork'));
+        alert("Login first");
+        navigate(createPageUrl('Home'));
         return;
       }
 
@@ -89,25 +91,25 @@ export default function PostWork() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
     try {
       const paymentText = `₹${formData.payment}${formData.payment_type === 'per_day' ? '/day' : formData.payment_type === 'per_hour' ? '/hour' : ''}`;
-      
+
       await base44.entities.Job.create({
         ...formData,
         payment: paymentText,
         employer_id: user.id,
-        employer_name: employerProfile?.name || 'Employer',
-        status: 'active'
+        employer_name: employerProfile?.name || user?.full_name || 'Employer',
+        status: 'pending'
       });
-      
+
       // Update employer job count
       if (employerProfile) {
         await base44.entities.EmployerProfile.update(employerProfile.id, {
           total_jobs_posted: (employerProfile.total_jobs_posted || 0) + 1
         });
       }
-      
+
       setIsSuccess(true);
       setTimeout(() => {
         navigate(createPageUrl('EmployerDashboard'));
@@ -115,7 +117,7 @@ export default function PostWork() {
     } catch (error) {
       console.error('Error posting job:', error);
     }
-    
+
     setIsLoading(false);
   };
 
@@ -139,7 +141,7 @@ export default function PostWork() {
             <CheckCircle className="w-10 h-10 text-green-600" />
           </div>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Job Posted Successfully!</h2>
-          <p className="text-gray-600">Workers ab aapki job dekh sakte hain</p>
+          <p className="text-gray-600">Workers can now see your job</p>
         </motion.div>
       </div>
     );
@@ -147,6 +149,11 @@ export default function PostWork() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-teal-50/30 to-gray-50 py-8 px-4">
+      <SEO
+        title="Post a Job & Hire Local Talent"
+        description="Need a worker today? Post your job on Flowrk.in and connect with local painters, cleaners, delivery boys, and helpers instantly. Easy hiring, no commission."
+        keywords="hire workers near me, post job free, find helpers, hire labor India, local hiring platform"
+      />
       <div className="max-w-2xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -158,10 +165,10 @@ export default function PostWork() {
                 <Briefcase className="w-7 h-7 text-white" />
               </div>
               <CardTitle className="text-2xl font-bold text-gray-900">
-                Naya Kaam Post Karo
+                <h1 className="text-2xl font-bold">Post A New Job</h1>
               </CardTitle>
               <p className="text-gray-500 mt-2">
-                Details bharo aur workers dhundho
+                Fill in the details and find workers
               </p>
             </CardHeader>
             <CardContent className="pt-6">
@@ -172,12 +179,13 @@ export default function PostWork() {
                     <Briefcase className="w-4 h-4 text-teal-600" />
                     Category *
                   </Label>
+                  <span className="text-xs text-gray-500 ml-1">(Required)</span>
                   <Select
                     value={formData.category}
                     onValueChange={(value) => setFormData({ ...formData, category: value })}
                   >
                     <SelectTrigger className="h-12 rounded-xl">
-                      <SelectValue placeholder="Category choose karo" />
+                      <SelectValue placeholder="Choose Category" />
                     </SelectTrigger>
                     <SelectContent>
                       {Object.entries(categoryLabels).map(([value, label]) => (
@@ -195,7 +203,7 @@ export default function PostWork() {
                   </Label>
                   <Input
                     id="title"
-                    placeholder="e.g., Painter Chahiye Shop Ke Liye"
+                    placeholder="e.g., Painter needed for shop"
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                     className="h-12 rounded-xl"
@@ -210,7 +218,7 @@ export default function PostWork() {
                   </Label>
                   <Textarea
                     id="description"
-                    placeholder="Kaam ke baare mein detail mein likho..."
+                    placeholder="Describe the work in detail..."
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     required
@@ -315,7 +323,7 @@ export default function PostWork() {
                     className="h-12 rounded-xl"
                   />
                   <p className="text-xs text-gray-500">
-                    Workers is number par contact karenge
+                    Workers will contact you on this number
                   </p>
                 </div>
 
@@ -324,7 +332,7 @@ export default function PostWork() {
                   <Label htmlFor="requirements">Special Requirements (Optional)</Label>
                   <Textarea
                     id="requirements"
-                    placeholder="Koi special requirement ho toh likho..."
+                    placeholder="Mention any special requirements..."
                     value={formData.requirements}
                     onChange={(e) => setFormData({ ...formData, requirements: e.target.value })}
                     className="min-h-[80px] rounded-xl"
@@ -342,7 +350,7 @@ export default function PostWork() {
                       Posting...
                     </>
                   ) : (
-                    'Job Post Karo'
+                    'Post Job'
                   )}
                 </Button>
               </form>

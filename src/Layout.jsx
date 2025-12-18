@@ -115,9 +115,15 @@ export default function Layout({ children, currentPageName }) {
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-1">
               {navLinks.map((link) => (
-                <Link
+                <button
                   key={link.page}
-                  to={createPageUrl(link.page)}
+                  onClick={() => {
+                    if (link.page === 'PostWork' && !isAuthenticated) {
+                      alert("Login first");
+                      return;
+                    }
+                    navigate(createPageUrl(link.page));
+                  }}
                   className={`
                     px-4 py-2 rounded-lg font-medium transition-colors
                     ${currentPageName === link.page
@@ -126,7 +132,7 @@ export default function Layout({ children, currentPageName }) {
                   `}
                 >
                   {link.name}
-                </Link>
+                </button>
               ))}
             </nav>
 
@@ -159,7 +165,10 @@ export default function Layout({ children, currentPageName }) {
                   </DropdownMenuContent>
                 </DropdownMenu>
               ) : (
-                <Button onClick={handleLogin} className="bg-teal-600 hover:bg-teal-700 rounded-xl">
+                <Button
+                  onClick={handleLogin}
+                  className="bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-bold rounded-xl shadow-md hover:shadow-teal-100 transition-all duration-300 hover:-translate-y-0.5"
+                >
                   <LogIn className="w-4 h-4 mr-2" />
                   Login / Signup
                 </Button>
@@ -187,12 +196,18 @@ export default function Layout({ children, currentPageName }) {
             >
               <div className="px-4 py-4 space-y-2">
                 {navLinks.map((link) => (
-                  <Link
+                  <button
                     key={link.page}
-                    to={createPageUrl(link.page)}
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                      if (link.page === 'PostWork' && !isAuthenticated) {
+                        alert("Login first");
+                        return;
+                      }
+                      navigate(createPageUrl(link.page));
+                    }}
                     className={`
-                      flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-colors
+                      w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-colors
                       ${currentPageName === link.page
                         ? 'bg-teal-50 text-teal-700'
                         : 'text-gray-600 hover:bg-gray-100'}
@@ -200,7 +215,7 @@ export default function Layout({ children, currentPageName }) {
                   >
                     <link.icon className="w-5 h-5" />
                     {link.name}
-                  </Link>
+                  </button>
                 ))}
 
                 <div className="pt-4 border-t">
@@ -267,7 +282,7 @@ export default function Layout({ children, currentPageName }) {
                 Find work or workers in your area — no resume, no agents
               </p>
               <p className="text-sm text-gray-500">
-                India's trusted local job platform for daily wage workers
+                India&apos;s trusted local job platform for daily wage workers
               </p>
             </div>
 
@@ -281,9 +296,18 @@ export default function Layout({ children, currentPageName }) {
                   </Link>
                 </li>
                 <li>
-                  <Link to={createPageUrl('PostWork')} className="hover:text-teal-400 transition-colors">
+                  <button
+                    onClick={() => {
+                      if (!isAuthenticated) {
+                        alert("Login first");
+                        return;
+                      }
+                      navigate(createPageUrl('PostWork'));
+                    }}
+                    className="hover:text-teal-400 transition-colors"
+                  >
                     Post Work
-                  </Link>
+                  </button>
                 </li>
                 <li>
                   <Link to={createPageUrl('Safety')} className="hover:text-teal-400 transition-colors">
@@ -298,6 +322,16 @@ export default function Layout({ children, currentPageName }) {
                 <li>
                   <Link to={createPageUrl('ContactUs')} className="hover:text-teal-400 transition-colors">
                     Contact Us
+                  </Link>
+                </li>
+                <li>
+                  <Link to={createPageUrl('PrivacyPolicy')} className="hover:text-teal-400 transition-colors">
+                    Privacy Policy
+                  </Link>
+                </li>
+                <li>
+                  <Link to={createPageUrl('TermsConditions')} className="hover:text-teal-400 transition-colors">
+                    Terms & Conditions
                   </Link>
                 </li>
               </ul>
@@ -348,6 +382,7 @@ export default function Layout({ children, currentPageName }) {
               <span className="text-gray-600">|</span>
               <span className="text-gray-500">Made with ❤️ in India</span>
               <span className="text-gray-500">Developed By: Tavqeer Hussain</span>
+              <span className="text-gray-500">Co-Founder: Sahil Hussain</span>
             </div>
           </div>
         </div>

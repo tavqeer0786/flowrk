@@ -3,7 +3,9 @@ import { MapPin, Clock, IndianRupee, Bookmark, BookmarkCheck, MessageCircle } fr
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { categoryLabels, categoryColors } from './CategoryCard';
+import { categoryLabels, categoryColors } from './categoryConstants';
+
+import { base44 } from '@/api/base44Client';
 
 export default function JobCard({
   job,
@@ -17,10 +19,10 @@ export default function JobCard({
 
   const handleWhatsAppApply = async () => {
     // Check if user is logged in
-    const { base44 } = await import('@/api/base44Client');
     const isAuth = await base44.auth.isAuthenticated();
 
     if (!isAuth) {
+      alert("Login first");
       base44.auth.redirectToLogin(window.location.href);
       return;
     }
@@ -51,11 +53,19 @@ export default function JobCard({
               <Badge variant="secondary" className="bg-gray-100 text-gray-700 font-medium">
                 {categoryLabels[job.category] || job.category}
               </Badge>
-              {job.status === 'active' && (
+              {job.status === 'active' ? (
                 <Badge className="bg-green-100 text-green-700 border-0">
                   Active
                 </Badge>
-              )}
+              ) : job.status === 'pending' ? (
+                <Badge className="bg-amber-100 text-amber-700 border-0">
+                  Pending Approval
+                </Badge>
+              ) : job.status === 'closed' ? (
+                <Badge className="bg-gray-100 text-gray-600 border-0">
+                  Closed
+                </Badge>
+              ) : null}
             </div>
             <h3 className="font-bold text-gray-900 text-lg leading-tight">
               {job.title || job.description?.slice(0, 60)}
@@ -102,15 +112,20 @@ export default function JobCard({
 
         {/* Employer Info */}
         <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-          <div className="text-sm">
-            <span className="text-gray-500">Posted by </span>
-            <span className="font-medium text-gray-800">{job.employer_name || 'Employer'}</span>
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-teal-50 flex items-center justify-center text-teal-600 font-bold text-xs border border-teal-100">
+              {(job.employer_name || 'E').slice(0, 1).toUpperCase()}
+            </div>
+            <div className="text-sm">
+              <span className="text-gray-500 block text-[10px] uppercase tracking-wider font-semibold">Posted by</span>
+              <span className="font-bold text-gray-900 leading-tight">{job.employer_name || 'Employer'}</span>
+            </div>
           </div>
 
           {showApply && (
             <Button
               onClick={handleWhatsAppApply}
-              className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold rounded-xl shadow-lg shadow-green-200"
+              className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-bold rounded-xl shadow-xl shadow-emerald-100 hover:shadow-emerald-200 transition-all duration-300 hover:scale-[1.02]"
             >
               <MessageCircle className="w-4 h-4 mr-2" />
               WhatsApp Apply

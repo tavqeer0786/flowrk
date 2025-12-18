@@ -1,11 +1,23 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
+import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Search, Briefcase, ArrowRight, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function HeroSection() {
+  const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  const checkAuth = async () => {
+    const authStatus = await base44.auth.isAuthenticated();
+    setIsAuthenticated(authStatus);
+  };
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-teal-600 via-teal-700 to-teal-800 py-16 md:py-24 lg:py-32">
       {/* Background Pattern */}
@@ -32,7 +44,7 @@ export default function HeroSection() {
             className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-medium mb-6"
           >
             <Sparkles className="w-4 h-4 text-amber-300" />
-            India's Local Job Platform
+            India&apos;s Local Job Platform
           </motion.div>
 
           {/* Main Headline */}
@@ -64,26 +76,30 @@ export default function HeroSection() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <Link to={createPageUrl('RoleSelection')}>
-              <Button
-                size="lg"
-                className="bg-white text-teal-700 hover:bg-gray-100 font-bold text-lg px-8 py-6 rounded-xl shadow-xl shadow-black/10 group"
-              >
-                <Search className="w-5 h-5 mr-2" />
-                Find Work
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </Link>
-            <Link to={createPageUrl('RoleSelection')}>
-              <Button
-                size="lg"
-                variant="outline"
-                className="bg-transparent border-2 border-white/30 text-white hover:bg-white/10 font-bold text-lg px-8 py-6 rounded-xl backdrop-blur-sm"
-              >
-                <Briefcase className="w-5 h-5 mr-2" />
-                Post a Job
-              </Button>
-            </Link>
+            <Button
+              size="lg"
+              className="bg-white text-teal-700 hover:bg-gray-100 font-bold text-lg px-8 py-6 rounded-xl shadow-xl shadow-black/10 group"
+              onClick={() => navigate(createPageUrl('FindWork'))}
+            >
+              <Search className="w-5 h-5 mr-2" />
+              Find Work
+              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="bg-transparent border-2 border-white/30 text-white hover:bg-white/10 font-bold text-lg px-8 py-6 rounded-xl backdrop-blur-sm"
+              onClick={() => {
+                if (!isAuthenticated) {
+                  alert("Login first");
+                  return;
+                }
+                navigate(createPageUrl('PostWork'));
+              }}
+            >
+              <Briefcase className="w-5 h-5 mr-2" />
+              Post a Job
+            </Button>
           </motion.div>
 
           {/* Stats */}

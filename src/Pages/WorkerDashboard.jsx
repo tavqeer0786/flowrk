@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Search, Bookmark, Send, User, MapPin, Briefcase, Loader2, Settings, LogOut } from 'lucide-react';
 import { motion } from 'framer-motion';
 import JobCard from '@/components/ui/JobCard';
-import { categoryLabels } from '@/components/ui/CategoryCard';
+import { categoryLabels } from '@/components/ui/categoryConstants';
 
 export default function WorkerDashboard() {
   const navigate = useNavigate();
@@ -100,7 +100,18 @@ export default function WorkerDashboard() {
     mutationFn: async (jobId) => {
       await base44.entities.Job.delete(jobId);
     },
-    onSuccess: () => {
+    onSuccess: async () => {
+      // Check for employer profile to sync count
+      try {
+        const profiles = await base44.entities.EmployerProfile.filter({ user_id: user.id });
+        if (profiles && profiles.length > 0) {
+          await base44.entities.EmployerProfile.update(profiles[0].id, {
+            total_jobs_posted: Math.max(0, (profiles[0].total_jobs_posted || 0) - 1)
+          });
+        }
+      } catch (err) {
+        console.error("Failed to sync job count", err);
+      }
       queryClient.invalidateQueries(['workerPostedJobs']);
       setDeleteJobId(null);
     }
@@ -151,10 +162,10 @@ export default function WorkerDashboard() {
         <Card className="max-w-md w-full">
           <CardContent className="pt-6 text-center">
             <User className="w-12 h-12 mx-auto mb-4 text-gray-400" />
-            <h2 className="text-xl font-bold mb-2">Profile Nahi Mila</h2>
-            <p className="text-gray-600 mb-4">Pehle apna profile banao</p>
+            <h2 className="text-xl font-bold mb-2">Profile Not Found</h2>
+            <p className="text-gray-600 mb-4">Please create your profile first</p>
             <Link to={createPageUrl('WorkerRegistration')}>
-              <Button className="bg-teal-600 hover:bg-teal-700">Profile Banao</Button>
+              <Button className="bg-teal-600 hover:bg-teal-700">Create Profile</Button>
             </Link>
           </CardContent>
         </Card>
@@ -170,7 +181,7 @@ export default function WorkerDashboard() {
           <div className="flex items-start justify-between">
             <div>
               <h1 className="text-2xl md:text-3xl font-bold text-white mb-1">
-                Namaste, {profile.full_name?.split(' ')[0]}! 👋
+                Hello, {profile.full_name?.split(' ')[0]}! 👋
               </h1>
               <div className="flex items-center gap-2 text-blue-100">
                 <MapPin className="w-4 h-4" />
@@ -208,7 +219,7 @@ export default function WorkerDashboard() {
               <div className="w-10 h-10 mx-auto mb-2 rounded-xl bg-teal-100 flex items-center justify-center">
                 <Search className="w-5 h-5 text-teal-600" />
               </div>
-              <span className="text-sm font-medium text-gray-700">Kaam Dhundo</span>
+              <span className="text-sm font-medium text-gray-700">Find Work</span>
             </motion.div>
           </Link>
           <motion.div whileHover={{ y: -2 }} className="bg-white rounded-xl shadow-lg p-4 text-center">
@@ -270,10 +281,10 @@ export default function WorkerDashboard() {
             ) : (
               <Card className="text-center py-12">
                 <Briefcase className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-                <h3 className="text-lg font-semibold text-gray-700 mb-2">Abhi Jobs Nahi Hain</h3>
-                <p className="text-gray-500 mb-4">Aapke area mein jaldi jobs aayengi</p>
+                <h3 className="text-lg font-semibold text-gray-700 mb-2">No Jobs Available</h3>
+                <p className="text-gray-500 mb-4">Jobs will be available in your area soon</p>
                 <Link to={createPageUrl('FindWork')}>
-                  <Button className="bg-teal-600 hover:bg-teal-700">Sabhi Jobs Dekho</Button>
+                  <Button className="bg-teal-600 hover:bg-teal-700">View All Jobs</Button>
                 </Link>
               </Card>
             )}
@@ -299,8 +310,8 @@ export default function WorkerDashboard() {
             ) : (
               <Card className="text-center py-12">
                 <Bookmark className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-                <h3 className="text-lg font-semibold text-gray-700 mb-2">Koi Saved Jobs Nahi</h3>
-                <p className="text-gray-500">Jobs save karo baad mein dekhne ke liye</p>
+                <h3 className="text-lg font-semibold text-gray-700 mb-2">No Saved Jobs</h3>
+                <p className="text-gray-500">Save jobs to view them later</p>
               </Card>
             )}
           </TabsContent>
@@ -325,8 +336,8 @@ export default function WorkerDashboard() {
             ) : (
               <Card className="text-center py-12">
                 <Send className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-                <h3 className="text-lg font-semibold text-gray-700 mb-2">Abhi Tak Apply Nahi Kiya</h3>
-                <p className="text-gray-500">Jobs dhundho aur WhatsApp par apply karo</p>
+                <h3 className="text-lg font-semibold text-gray-700 mb-2">Not Applied Yet</h3>
+                <p className="text-gray-500">Find jobs and apply through WhatsApp</p>
               </Card>
             )}
           </TabsContent>
@@ -362,10 +373,10 @@ export default function WorkerDashboard() {
             ) : (
               <Card className="text-center py-12">
                 <Briefcase className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-                <h3 className="text-lg font-semibold text-gray-700 mb-2">Koi Job Post Nahi Ki</h3>
-                <p className="text-gray-500 mb-4">Agar aap kisi ko kaam dena chahte hain, to yahan post karein.</p>
+                <h3 className="text-lg font-semibold text-gray-700 mb-2">No Jobs Posted</h3>
+                <p className="text-gray-500 mb-4">If you want to offer work to someone, post it here.</p>
                 <Link to={createPageUrl('PostWork')}>
-                  <Button className="bg-teal-600 hover:bg-teal-700">Job Post Karo</Button>
+                  <Button className="bg-teal-600 hover:bg-teal-700">Post Job</Button>
                 </Link>
               </Card>
             )}

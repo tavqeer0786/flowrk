@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { User, Briefcase, ArrowRight, Loader2, CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
+import SEO from '@/components/SEO';
 
 export default function RoleSelection() {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ export default function RoleSelection() {
     try {
       const isAuthenticated = await base44.auth.isAuthenticated();
       if (!isAuthenticated) {
+        alert("login first");
         base44.auth.redirectToLogin(createPageUrl('RoleSelection'));
         return;
       }
@@ -86,6 +88,11 @@ export default function RoleSelection() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-teal-50/30 to-gray-50 py-12 px-4">
+      <SEO
+        title="Get Started - Join as Worker or Employer"
+        description="Choose your role on Flowrk.in. Whether you want to find local work or hire talented workers, get started in seconds."
+        keywords="join Flowrk, register for jobs, hire labor, find worker registration, worker signup India"
+      />
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <motion.div

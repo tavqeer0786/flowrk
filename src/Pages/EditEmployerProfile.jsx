@@ -100,13 +100,13 @@ export default function EditEmployerProfile() {
                 <Briefcase className="w-7 h-7 text-white" />
               </div>
               <CardTitle className="text-2xl font-bold text-gray-900">
-                Profile Edit Karo
+                Edit Profile
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
               {profile && (
-                <EmployerRegistrationForm 
-                  onSubmit={handleSubmit} 
+                <EmployerRegistrationForm
+                  onSubmit={handleSubmit}
                   isLoading={isLoading}
                   initialData={profile}
                 />

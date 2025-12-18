@@ -6,6 +6,7 @@ import CategoriesSection from '@/components/home/CategoriesSection';
 import HowItWorks from '@/components/home/HowItWorks';
 import LatestJobs from '@/components/home/LatestJobs';
 import TrustSection from '@/components/home/TrustSection';
+import SEO from '@/components/SEO';
 
 export default function Home() {
   const { data: jobs, isLoading } = useQuery({
@@ -15,6 +16,11 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Find Local Jobs & Hire Workers Instantly"
+        description="India's leading hyperlocal work platform. Find painters, cleaners, delivery boys, and shop helpers near you. No agents, no commission, direct contact."
+        keywords="local jobs, find work near me, hire workers India, daily wage jobs, part time helper, Flowrk.in"
+      />
       <HeroSection />
       <CategoriesSection />
       <HowItWorks />

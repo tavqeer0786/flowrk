@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2, User } from 'lucide-react';
 import { motion } from 'framer-motion';
 import WorkerRegistrationForm from '@/components/forms/WorkerRegistrationForm';
+import SEO from '@/components/SEO';
 
 export default function WorkerRegistration() {
   const navigate = useNavigate();
@@ -24,17 +25,17 @@ export default function WorkerRegistration() {
         base44.auth.redirectToLogin(createPageUrl('RoleSelection'));
         return;
       }
-      
+
       const userData = await base44.auth.me();
       setUser(userData);
-      
+
       // Check if already has worker profile
       const profiles = await base44.entities.WorkerProfile.filter({ user_id: userData.id });
       if (profiles && profiles.length > 0) {
         navigate(createPageUrl('WorkerDashboard'));
         return;
       }
-      
+
       setCheckingAuth(false);
     } catch (error) {
       console.error('Auth error:', error);
@@ -51,7 +52,7 @@ export default function WorkerRegistration() {
         saved_jobs: [],
         applied_jobs: []
       });
-      
+
       navigate(createPageUrl('WorkerHome'));
     } catch (error) {
       console.error('Error creating profile:', error);
@@ -69,6 +70,11 @@ export default function WorkerRegistration() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-gray-50 py-8 px-4">
+      <SEO
+        title="Worker Registration - Find Nearby Jobs"
+        description="Register as a worker on Flowrk.in and start finding local jobs in your area. Free registration, direct payment."
+        keywords="worker registration, find jobs near me, daily wage worker India, labor registration"
+      />
       <div className="max-w-xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -80,15 +86,15 @@ export default function WorkerRegistration() {
                 <User className="w-7 h-7 text-white" />
               </div>
               <CardTitle className="text-2xl font-bold text-gray-900">
-                Worker Profile Banao
+                Create Worker Profile
               </CardTitle>
               <p className="text-gray-500 mt-2">
-                Apni details bharo aur local jobs paayein
+                Fill in your details and find local jobs
               </p>
             </CardHeader>
             <CardContent className="pt-6">
-              <WorkerRegistrationForm 
-                onSubmit={handleSubmit} 
+              <WorkerRegistrationForm
+                onSubmit={handleSubmit}
                 isLoading={isLoading}
               />
             </CardContent>

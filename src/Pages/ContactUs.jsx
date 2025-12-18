@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card';
+import { Button } from '@/Components/ui/button';
+import { Input } from '@/Components/ui/input';
+import { Label } from '@/Components/ui/label';
+import { Textarea } from '@/Components/ui/textarea';
 import { Mail, Phone, MapPin, Send, MessageSquare, Users, Briefcase, Info, CheckCircle } from 'lucide-react';
+import SEO from '@/components/SEO';
 
 export default function ContactUs() {
     const [formData, setFormData] = useState({
@@ -26,6 +27,11 @@ export default function ContactUs() {
 
     return (
         <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+            <SEO
+                title="Contact Us"
+                description="Have questions or feedback? Contact the Flowrk.in team via email, WhatsApp, or our contact form. We're here to help you with job posting or finding work."
+                keywords="contact Flowrk, customer support Flowrk, report issues Flowrk"
+            />
             <div className="max-w-7xl mx-auto">
 
                 {/* Header */}
@@ -34,7 +40,7 @@ export default function ContactUs() {
                         Get in Touch with <span className="text-teal-600">Flowrk.in</span>
                     </h1>
                     <p className="text-xl text-gray-600">
-                        Flowrk.in par hum har user ka feedback aur query value karte hain. Humari team ready hai aapke questions, suggestions aur technical issues ko solve karne ke liye.
+                        At Flowrk.in, we value every user's feedback and query. Our team is ready to solve your questions, suggestions, and technical issues.
                     </p>
                 </div>
 
@@ -51,7 +57,7 @@ export default function ContactUs() {
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-6">
-                                <p className="text-gray-600">Aap humse multiple ways me contact kar sakte hain:</p>
+                                <p className="text-gray-600">You can contact us in multiple ways:</p>
 
                                 <div className="space-y-4">
                                     <div className="flex items-center gap-4 p-4 bg-teal-50 rounded-lg">
@@ -60,7 +66,7 @@ export default function ContactUs() {
                                         </div>
                                         <div>
                                             <p className="text-xs text-teal-600 font-semibold uppercase">Email</p>
-                                            <a href="mailto:support@flowrk.in" className="text-gray-900 font-medium hover:underline">support@flowrk.in</a>
+                                            <a href="mailto:flowrk66@gmail.com" className="text-gray-900 font-medium hover:underline">flowrk66@gmail.com</a>
                                         </div>
                                     </div>
 
@@ -86,7 +92,7 @@ export default function ContactUs() {
                                 </div>
 
                                 <p className="text-sm text-center text-gray-500 bg-gray-50 py-2 rounded-full">
-                                    Hum ensure karte hain ki aapka query 24–48 hours ke andar respond ho.
+                                    We ensure that your query is responded to within 24–48 hours.
                                 </p>
                             </CardContent>
                         </Card>
@@ -96,10 +102,10 @@ export default function ContactUs() {
                             <h2 className="text-2xl font-bold text-gray-900 mb-6">Why Contact Us?</h2>
                             <div className="grid gap-6">
                                 {[
-                                    { icon: Info, title: "Support", desc: "Technical issues ya website related problems report karein." },
-                                    { icon: MessageSquare, title: "Feedback", desc: "Features aur UX improvement suggestions share karein." },
-                                    { icon: Users, title: "Partnerships", desc: "Local businesses, NGOs, or freelancers ke liye collaboration." },
-                                    { icon: Briefcase, title: "Job Post Help", desc: "Agar aapko kaam post karne me help chahiye." }
+                                    { icon: Info, title: "Support", desc: "Report technical issues or website-related problems." },
+                                    { icon: MessageSquare, title: "Feedback", desc: "Share suggestions for features and UX improvements." },
+                                    { icon: Users, title: "Partnerships", desc: "Collboration opportunities for local businesses, NGOs, or freelancers." },
+                                    { icon: Briefcase, title: "Job Post Help", desc: "If you need assistance in posting work or jobs." }
                                 ].map((item, idx) => (
                                     <div key={idx} className="flex gap-4">
                                         <div className="mt-1">
@@ -120,7 +126,7 @@ export default function ContactUs() {
                         <Card className="shadow-lg border-teal-100">
                             <CardHeader>
                                 <CardTitle className="text-2xl">Contact Form</CardTitle>
-                                <p className="text-gray-500 text-sm">Hum recommend karte hain ki aap form ke through bhi contact karein.</p>
+                                <p className="text-gray-500 text-sm">We recommend that you also contact us through the form.</p>
                             </CardHeader>
                             <CardContent>
                                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -208,19 +214,20 @@ export default function ContactUs() {
                         <div className="bg-teal-900 text-white p-8 rounded-xl text-center">
                             <h2 className="text-xl font-bold mb-4">Our Promise</h2>
                             <p className="text-teal-100 mb-6">
-                                Flowrk.in me user satisfaction aur trust humari priority hai. Humari team friendly, responsive aur proactive hai, aur hum ensure karte hain ki aapke messages ka response timely ho.
+                                User satisfaction and trust are our priorities at Flowrk.in. Our team is friendly, responsive, and proactive, and we ensure a timely response to your messages.
                             </p>
                         </div>
 
                         {/* Closing */}
                         <div className="bg-gray-100 p-6 rounded-xl text-center">
                             <p className="text-gray-600 text-sm">
-                                Flowrk.in ke About Us aur Contact Us pages users ko platform ke mission, vision aur support system ke baare me clear idea dete hain. Humari goal hai ki har Indian ko employment aur earning ka mauka mile, aur aapke feedback ke zariye hum apni services aur better banate rahein.
+                                Flowrk.in's About Us and Contact Us pages give users a clear idea of the platform's mission, vision, and support system. Our goal is to provide every Indian with employment and earning opportunities, and through your feedback, we continue to improve our services.
                             </p>
                         </div>
 
                     </div>
                 </div>
+
             </div>
         </div>
     );

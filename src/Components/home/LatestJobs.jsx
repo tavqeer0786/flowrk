@@ -27,7 +27,9 @@ export default function LatestJobs({ jobs, isLoading }) {
             </h2>
           </div>
           <Link to={createPageUrl('FindWork')}>
-            <Button variant="outline" className="rounded-xl group">
+            <Button
+              className="bg-teal-50 text-teal-700 hover:bg-teal-600 hover:text-white border border-teal-200 rounded-xl group transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 font-bold"
+            >
               All Jobs
               <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>

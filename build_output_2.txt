@@ -1,0 +1,29 @@
+
+> flowrk-in@0.0.0 build
+> vite build
+
+[36mvite v7.3.0 [32mbuilding client environment for production...[36m[39m
+transforming...
+[32mΓ£ô[39m 1851 modules transformed.
+Γ£ù Build failed in 4.31s
+error during build:
+src/Pages/FindWork.jsx (10:9): "categoryLabels" is not exported by "src/components/ui/CategoryCard.jsx", imported by "src/Pages/FindWork.jsx".
+file: E:/Web Development_Kit/flowrk/src/Pages/FindWork.jsx:10:9
+
+ 8: import { motion, AnimatePresence } from 'framer-motion';
+ 9: import JobCard from '@/Components/ui/JobCard';
+10: import { categoryLabels } from '@/Components/ui/CategoryCard';
+             ^
+11: import { Badge } from '@/Components/ui/badge';
+12: import SEO from '@/components/SEO';
+
+    at getRollupError (file:///E:/Web%20Development_Kit/flowrk/node_modules/rollup/dist/es/shared/parseAst.js:401:41)
+    at error (file:///E:/Web%20Development_Kit/flowrk/node_modules/rollup/dist/es/shared/parseAst.js:397:42)
+    at Module.error (file:///E:/Web%20Development_Kit/flowrk/node_modules/rollup/dist/es/shared/node-entry.js:16994:16)
+    at Module.traceVariable (file:///E:/Web%20Development_Kit/flowrk/node_modules/rollup/dist/es/shared/node-entry.js:17450:29)
+    at ModuleScope.findVariable (file:///E:/Web%20Development_Kit/flowrk/node_modules/rollup/dist/es/shared/node-entry.js:15113:39)
+    at FunctionScope.findVariable (file:///E:/Web%20Development_Kit/flowrk/node_modules/rollup/dist/es/shared/node-entry.js:5674:38)
+    at FunctionBodyScope.findVariable (file:///E:/Web%20Development_Kit/flowrk/node_modules/rollup/dist/es/shared/node-entry.js:5674:38)
+    at ReturnValueScope.findVariable (file:///E:/Web%20Development_Kit/flowrk/node_modules/rollup/dist/es/shared/node-entry.js:5674:38)
+    at FunctionBodyScope.findVariable (file:///E:/Web%20Development_Kit/flowrk/node_modules/rollup/dist/es/shared/node-entry.js:5674:38)
+    at ReturnValueScope.findVariable (file:///E:/Web%20Development_Kit/flowrk/node_modules/rollup/dist/es/shared/node-entry.js:5674:38)

@@ -7,12 +7,12 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Plus, Briefcase, CheckCircle, XCircle, MapPin, Settings, LogOut, 
-  Loader2, IndianRupee, Clock, MessageCircle, Edit, Trash2, AlertCircle 
+import {
+  Plus, Briefcase, CheckCircle, XCircle, MapPin, Settings, LogOut,
+  Loader2, IndianRupee, Clock, MessageCircle, Edit, Trash2, AlertCircle
 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { categoryLabels, categoryColors } from '@/components/ui/CategoryCard';
+import { categoryLabels, categoryColors } from '@/components/ui/categoryConstants';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -42,7 +42,7 @@ export default function EmployerDashboard() {
         base44.auth.redirectToLogin(createPageUrl('RoleSelection'));
         return;
       }
-      
+
       const userData = await base44.auth.me();
       setUser(userData);
       setCheckingAuth(false);
@@ -90,7 +90,13 @@ export default function EmployerDashboard() {
     mutationFn: async (jobId) => {
       await base44.entities.Job.delete(jobId);
     },
-    onSuccess: () => {
+    onSuccess: async () => {
+      // Update employer job count
+      if (profile) {
+        await base44.entities.EmployerProfile.update(profile.id, {
+          total_jobs_posted: Math.max(0, (profile.total_jobs_posted || 0) - 1)
+        });
+      }
       queryClient.invalidateQueries(['employerJobs']);
       setDeleteJobId(null);
     }
@@ -100,7 +106,7 @@ export default function EmployerDashboard() {
     base44.auth.logout(createPageUrl('Home'));
   };
 
-  const activeJobs = jobs?.filter(j => j.status === 'active') || [];
+  const activeJobs = jobs?.filter(j => j.status === 'active' || j.status === 'pending' || j.status === 'approved') || [];
   const closedJobs = jobs?.filter(j => j.status === 'closed') || [];
 
   if (checkingAuth || profileLoading) {
@@ -117,10 +123,10 @@ export default function EmployerDashboard() {
         <Card className="max-w-md w-full">
           <CardContent className="pt-6 text-center">
             <Briefcase className="w-12 h-12 mx-auto mb-4 text-gray-400" />
-            <h2 className="text-xl font-bold mb-2">Profile Nahi Mila</h2>
-            <p className="text-gray-600 mb-4">Pehle apna employer profile banao</p>
+            <h2 className="text-xl font-bold mb-2">Profile Not Found</h2>
+            <p className="text-gray-600 mb-4">Please create your employer profile first</p>
             <Link to={createPageUrl('EmployerRegistration')}>
-              <Button className="bg-teal-600 hover:bg-teal-700">Profile Banao</Button>
+              <Button className="bg-teal-600 hover:bg-teal-700">Create Profile</Button>
             </Link>
           </CardContent>
         </Card>
@@ -130,7 +136,7 @@ export default function EmployerDashboard() {
 
   const JobListItem = ({ job }) => {
     const gradient = categoryColors[job.category] || 'from-gray-400 to-gray-500';
-    
+
     return (
       <motion.div
         initial={{ opacity: 0, y: 10 }}
@@ -145,8 +151,8 @@ export default function EmployerDashboard() {
                 <Badge variant="secondary" className="bg-gray-100">
                   {categoryLabels[job.category]}
                 </Badge>
-                <Badge className={job.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}>
-                  {job.status === 'active' ? 'Active' : 'Closed'}
+                <Badge className={job.status === 'active' ? 'bg-green-100 text-green-700' : job.status === 'pending' ? 'bg-amber-100 text-amber-700' : 'bg-gray-100 text-gray-600'}>
+                  {job.status === 'active' ? 'Active' : job.status === 'pending' ? 'Pending Approval' : 'Closed'}
                 </Badge>
               </div>
               <h3 className="font-bold text-gray-900">
@@ -225,7 +231,7 @@ export default function EmployerDashboard() {
           <div className="flex items-start justify-between">
             <div>
               <h1 className="text-2xl md:text-3xl font-bold text-white mb-1">
-                Namaste, {profile.name?.split(' ')[0]}! 👋
+                Hello, {profile.name?.split(' ')[0]}! 👋
               </h1>
               <div className="flex items-center gap-2 text-amber-100">
                 <MapPin className="w-4 h-4" />
@@ -252,7 +258,7 @@ export default function EmployerDashboard() {
           <Link to={createPageUrl('PostWork')}>
             <motion.div whileHover={{ y: -2 }} className="bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl shadow-lg p-4 text-center text-white">
               <Plus className="w-8 h-8 mx-auto mb-2" />
-              <span className="font-semibold">Naya Job Post</span>
+              <span className="font-semibold">New Job Post</span>
             </motion.div>
           </Link>
           <motion.div whileHover={{ y: -2 }} className="bg-white rounded-xl shadow-lg p-4 text-center">
@@ -298,12 +304,12 @@ export default function EmployerDashboard() {
             ) : (
               <Card className="text-center py-12">
                 <Briefcase className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-                <h3 className="text-lg font-semibold text-gray-700 mb-2">Koi Active Jobs Nahi</h3>
-                <p className="text-gray-500 mb-4">Naya job post karo workers dhundne ke liye</p>
+                <h3 className="text-lg font-semibold text-gray-700 mb-2">No Active Jobs</h3>
+                <p className="text-gray-500 mb-4">Post a new job to find workers</p>
                 <Link to={createPageUrl('PostWork')}>
                   <Button className="bg-teal-600 hover:bg-teal-700">
                     <Plus className="w-4 h-4 mr-2" />
-                    Job Post Karo
+                    Post Job
                   </Button>
                 </Link>
               </Card>
@@ -320,8 +326,8 @@ export default function EmployerDashboard() {
             ) : (
               <Card className="text-center py-12">
                 <XCircle className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-                <h3 className="text-lg font-semibold text-gray-700 mb-2">Koi Closed Jobs Nahi</h3>
-                <p className="text-gray-500">Jab job complete ho jayegi, use close kar dena</p>
+                <h3 className="text-lg font-semibold text-gray-700 mb-2">No Closed Jobs</h3>
+                <p className="text-gray-500">When the job is complete, close it</p>
               </Card>
             )}
           </TabsContent>
@@ -334,10 +340,10 @@ export default function EmployerDashboard() {
           <AlertDialogHeader>
             <AlertDialogTitle className="flex items-center gap-2">
               <AlertCircle className="w-5 h-5 text-red-500" />
-              Job Delete Karna Hai?
+              Delete Job?
             </AlertDialogTitle>
             <AlertDialogDescription>
-              Yeh action undo nahi hoga. Job permanently delete ho jayega.
+              This action cannot be undone. The job will be permanently deleted.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
