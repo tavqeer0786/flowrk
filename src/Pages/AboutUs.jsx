@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card, CardContent } from '@/Components/ui/card';
-import { Badge } from '@/Components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { Building2, Users, Shield, Zap, Target, Heart, Mail, Phone, MapPin } from 'lucide-react';
 import SEO from '@/components/SEO';
 
